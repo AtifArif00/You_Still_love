@@ -1,0 +1,467 @@
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
+:root {
+  --pink-1: #ff6fa5;
+  --pink-2: #ff9ac4;
+  --pink-3: #ffc1e0;
+  --purple-1: #a86bff;
+  --purple-2: #7b5cff;
+  --red-1: #ff4b7d;
+  --gold: #ffd166;
+  --white-soft: #fff5f9;
+  --text-dark: #3a1030;
+  --card-bg: rgba(255, 255, 255, 0.22);
+  --card-border: rgba(255, 255, 255, 0.45);
+  --shadow-soft: 0 20px 60px rgba(122, 20, 70, 0.35);
+  --transition-fast: 0.25s ease;
+  --transition-medium: 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Segoe UI', 'Trebuchet MS', system-ui, -apple-system, sans-serif;
+  color: var(--text-dark);
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* =========================================================
+   ANIMATED BACKGROUND
+========================================================= */
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(120deg, var(--purple-2), var(--pink-1), var(--red-1), var(--purple-1));
+  background-size: 400% 400%;
+  animation: gradientShift 18s ease infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.bg-gradient::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255,255,255,0.12), transparent 45%);
+}
+
+/* Floating hearts + particles */
+.floating-hearts {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: -10%;
+  font-size: 20px;
+  opacity: 0.8;
+  animation-name: floatUp;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.4));
+}
+
+.floating-heart.particle {
+  font-size: 6px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.5;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.9; }
+  50% { transform: translateY(-55vh) translateX(15px) rotate(15deg); }
+  90% { opacity: 0.7; }
+  100% {
+    transform: translateY(-110vh) translateX(-10px) rotate(-10deg);
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   MUSIC TOGGLE
+========================================================= */
+.music-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 50;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--transition-fast), background var(--transition-fast);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.music-toggle:hover { transform: scale(1.08); }
+.music-toggle.playing { animation: pulseIcon 1.6s ease-in-out infinite; }
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+/* =========================================================
+   SCENE / LAYOUT
+========================================================= */
+.scene {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 1;
+}
+
+/* =========================================================
+   GLASS CARD
+========================================================= */
+.glass {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 28px;
+  box-shadow: var(--shadow-soft);
+}
+
+.question-card {
+  width: 100%;
+  padding: 52px 32px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  min-height: 340px;
+  justify-content: center;
+  animation: cardIn var(--transition-medium);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.question-text {
+  font-size: clamp(22px, 5vw, 32px);
+  line-height: 1.35;
+  color: #fff;
+  text-shadow: 0 3px 14px rgba(120, 10, 60, 0.45);
+  margin: 0 0 40px;
+  max-width: 480px;
+  animation: fadeInText 0.6s ease;
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.glow-pop {
+  animation: glowPop 0.5s ease;
+}
+@keyframes glowPop {
+  0%   { text-shadow: 0 0 0 rgba(255,255,255,0); }
+  50%  { text-shadow: 0 0 26px rgba(255, 214, 102, 0.9); }
+  100% { text-shadow: 0 3px 14px rgba(120, 10, 60, 0.45); }
+}
+
+/* Button area — normal flow container. The NO button escapes this
+   via position:fixed for the roaming/runaway/disappear mechanics. */
+.button-area {
+  position: relative;
+  width: 100%;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Subtle progress indicator, kept small and out of the way */
+.progress-label {
+  margin-top: 26px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.3px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+.btn {
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 16px 30px;
+  cursor: pointer;
+  user-select: none;
+  transition: box-shadow var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-yes {
+  background: linear-gradient(135deg, var(--gold), var(--red-1));
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(255, 75, 125, 0.45);
+}
+
+.btn-yes:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 14px 32px rgba(255, 75, 125, 0.55);
+}
+
+.btn-yes:active { transform: translateY(0) scale(0.97); }
+
+.btn-no {
+  background: rgba(255, 255, 255, 0.65);
+  color: var(--text-dark);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  position: relative;
+  z-index: 60;
+}
+
+/* Applied when the NO button is repositioned anywhere on screen
+   (move / runAway / disappear mechanics) */
+.btn-no.roaming {
+  position: fixed;
+  transition: left 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              top 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn.pulse-yes {
+  animation: bigPulse 0.7s ease;
+}
+@keyframes bigPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Fade out / back in for the "disappear" mechanic */
+.btn-fading {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.btn-fading-in {
+  animation: fadeInPop 0.3s ease;
+}
+@keyframes fadeInPop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Shake, for the angry / anime-reaction mechanic */
+.btn-shake {
+  animation: shakeBtn 0.4s ease;
+}
+@keyframes shakeBtn {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  20% { transform: translateX(-6px) rotate(-4deg); }
+  40% { transform: translateX(6px) rotate(4deg); }
+  60% { transform: translateX(-4px) rotate(-2deg); }
+  80% { transform: translateX(4px) rotate(2deg); }
+}
+
+/* Small text "pop" whenever the NO button label changes */
+.text-pop {
+  animation: textPop 0.3s ease;
+}
+@keyframes textPop {
+  0%   { transform: scale(0.85); }
+  60%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Gentle jitter, for the "final boss" mechanic */
+.boss-jitter {
+  animation: bossJitter 0.3s ease;
+}
+@keyframes bossJitter {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-4px, -2px); }
+  50%  { transform: translate(4px, 2px); }
+  75%  { transform: translate(-3px, 2px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Ego vs. Heart color swap */
+.ego-tone {
+  background: rgba(150, 150, 175, 0.75);
+  color: #23233a;
+}
+.heart-tone {
+  background: linear-gradient(135deg, var(--gold), var(--red-1));
+  color: #fff;
+}
+
+.hint-text {
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.85);
+  min-height: 16px;
+  font-style: italic;
+}
+
+/* =========================================================
+   HEART / CONFETTI BURST
+========================================================= */
+.heart-burst-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.burst-heart {
+  position: absolute;
+  font-size: 22px;
+  opacity: 1;
+  animation: burstFly 1s ease-out forwards;
+}
+
+@keyframes burstFly {
+  0% {
+    transform: translate(0, 0) scale(0.4) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), var(--dy)) scale(1.1) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+/* =========================================================
+   FINAL CARD
+========================================================= */
+.final-card {
+  width: 100%;
+  padding: 52px 32px 44px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: cardIn var(--transition-medium);
+}
+
+.final-heart {
+  font-size: 56px;
+  margin-bottom: 8px;
+  animation: heartBeat 1.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 20px rgba(255, 100, 150, 0.7));
+}
+
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.2); }
+  30% { transform: scale(0.95); }
+  45% { transform: scale(1.12); }
+  60% { transform: scale(1); }
+}
+
+.final-title {
+  font-size: clamp(26px, 6vw, 36px);
+  color: #fff;
+  text-shadow: 0 3px 16px rgba(120, 10, 60, 0.5);
+  margin-bottom: 6px;
+}
+
+.final-subtitle {
+  font-size: clamp(18px, 4vw, 22px);
+  color: var(--gold);
+  margin-bottom: 22px;
+  font-weight: 700;
+}
+
+.final-message {
+  color: #fff;
+  font-size: 15.5px;
+  line-height: 1.9;
+  max-width: 420px;
+  margin-bottom: 24px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.2);
+}
+
+.final-message p { opacity: 0.95; }
+
+.final-highlight {
+  font-weight: 800;
+  color: var(--gold);
+  font-size: 17px;
+  margin-top: 6px;
+}
+
+.final-admit {
+  font-size: clamp(17px, 4vw, 20px);
+  color: #fff;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.replay-btn {
+  margin-top: 4px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 480px) {
+  .question-card { padding: 44px 20px 26px; min-height: 300px; }
+  .btn { padding: 14px 22px; font-size: 15px; }
+  .button-area { min-height: 60px; gap: 14px; }
+  .final-card { padding: 44px 20px 36px; }
+  .music-toggle { width: 42px; height: 42px; top: 12px; right: 12px; }
+}
+
+@media (min-width: 900px) {
+  .question-text { font-size: 34px; }
+}

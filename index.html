@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>Do You Still Love Me? ❤️</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Ambient animated background -->
+  <div class="bg-gradient"></div>
+  <div class="floating-hearts" id="floatingHearts"></div>
+
+  <!-- Music toggle -->
+  <button id="musicToggle" class="music-toggle" aria-label="Toggle music">🎵</button>
+  <audio id="bgMusic" loop preload="none">
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <main class="scene">
+
+    <!-- Question card: question + YES + NO + subtle progress. Nothing else. -->
+    <section class="card glass question-card" id="questionCard">
+      <h1 class="question-text" id="questionText"></h1>
+      <div class="button-area" id="buttonArea">
+        <button class="btn btn-yes" id="yesBtn" type="button">YES ❤️</button>
+        <button class="btn btn-no" id="noBtn" type="button">NO 😏</button>
+      </div>
+      <div class="progress-label" id="progressLabel">Question 1 / 10 ❤️</div>
+    </section>
+
+    <!-- Final reveal card -->
+    <section class="card glass final-card" id="finalCard" hidden>
+      <div class="final-heart">❤️</div>
+      <h1 class="final-title">I KNEW IT! ❤️😂</h1>
+      <h2 class="final-subtitle" id="finalSubtitle">You still love Atif.</h2>
+      
+      <h2 class="final-admit">Admit it... You're still in love with Atif. ❤️</h2>
+      <button class="btn btn-yes replay-btn" id="replayBtn" type="button">Play Again 💫</button>
+    </section>
+
+  </main>
+
+  <!-- Container for the heart/confetti burst animation -->
+  <div class="heart-burst-container" id="heartBurstContainer"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
